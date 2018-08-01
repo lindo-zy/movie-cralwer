@@ -1,0 +1,248 @@
+<html>
+
+<head>
+    <title>数据表</title>
+    <!-- Bootstrap -->
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../static/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+    <link href="../static/assets/styles.css" rel="stylesheet" media="screen">
+    <link href="../static/assets/DT_bootstrap.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="../static/assets/styles.css">
+    <link rel="stylesheet" href="../static/css/bootstrap-table.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script src="../static/vendors/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+</head>
+
+<body>
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="index.html">Admin Panel</a>
+            <div class="nav-collapse collapse">
+                <ul class="nav pull-right">
+                    <li class="dropdown">
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a tabindex="-1" href="#">Profile</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a tabindex="-1" href="login.html">Logout</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav">
+                    <li class="active">
+                        <a href="#">Dashboard</a>
+                    </li>
+
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span3" id="sidebar">
+            <ul id="span3" class="nav nav-list bs-docs-sidenav nav-collapse collapse">
+                <li>
+                    <a href="{{ url_for('index') }}"><i class="icon-chevron-right"></i> 总览</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('tables') }}"><i class="icon-chevron-right"></i> 数据表</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('data') }}"><i class="icon-chevron-right"></i> 数据处理</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('stats') }}"><i class="icon-chevron-right"></i> 数据图表</a>
+                </li>
+                <li>
+                    <a href="#"><span class="badge badge-success pull-right">3</span> DataBases</a>
+                </li>
+                <li>
+                    <a href="#"><span class="badge badge-info pull-right">{{ all_count }}</span> AllRecords</a>
+                </li>
+
+
+            </ul>
+        </div>
+        <!--/span-->
+        <div class="span9" id="content">
+            <div class="row-fluid">
+                <!-- block -->
+                <div class="block">
+                    <div id="mycharts" style="height: 50%">
+
+                    </div>
+                </div>
+                <div class="block">
+                    <div id="mycharts2" style="height: 50%">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--/.fluid-container-->
+
+<script src="../static/vendors/jquery-1.9.1.js"></script>
+<script src="../static/js/bootstrap.min.js"></script>
+<script src="../static/vendors/datatables/js/jquery.dataTables.min.js"></script>
+<script src="../static/assets/bootstrap-table.js"></script>
+<script src="../static/assets/scripts.js"></script>
+<script src="../static/assets/echarts.min.js"></script>
+
+
+<script type="text/javascript">
+
+    var mychart = echarts.init(document.getElementById('mycharts'));
+
+
+    mychart.setOption({
+        title: {
+            x: 'center',
+            text: '最受欢迎5部电影',
+
+        },
+        tooltip: {
+            trigger: 'item'
+        },
+
+        calculable: true,
+        grid: {
+            borderWidth: 0,
+            y: 80,
+            y2: 60
+        },
+        xAxis: [
+            {
+                type: 'category',
+                show: false,
+                data: [{ % for i in result %
+            }
+            '{{ i }}',
+            { % endfor %
+    }
+    ]
+    }
+    ],
+    yAxis: [
+        {
+            type: 'value',
+            show: false
+        }
+    ],
+        series
+    :
+    [
+        {
+
+            type: 'bar',
+            itemStyle: {
+                normal: {
+                    color: function (params) {
+                        // build a color map as your need.
+                        var colorList = [
+                            '#C1232B', '#B5C334', '#FCCE10', '#E87C25', '#27727B',
+                            '#FE8463', '#9BCA63', '#FAD860', '#F3A43B', '#60C0DD',
+                            '#D7504B', '#C6E579', '#F4E001', '#F0805A', '#26C0C0'
+                        ];
+                        return colorList[params.dataIndex]
+                    },
+                    label: {
+                        show: true,
+                        position: 'top',
+                        formatter: '{b}\n{c}'
+                    }
+                }
+            },
+
+            data: {{l}
+    },
+
+
+    }
+    ]
+    }
+    )
+    ;
+
+</script>
+
+<script>
+    var mychart = echarts.init(document.getElementById('mycharts2'));
+
+
+    mychart.setOption(
+        {
+            title: {
+
+                text: '最受欢迎的电影类型',
+
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+
+            toolbox: {
+                show: true,
+                feature: {
+                    mark: {show: true},
+                    dataView: {show: true, readOnly: false},
+                    magicType: {show: true, type: ['line', 'bar']},
+                    restore: {show: true},
+                    saveAsImage: {show: true}
+                }
+            },
+            calculable: true,
+            xAxis: [
+                {
+                    type: 'value',
+                    boundaryGap: [0, 0.01]
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'category',
+                    data: [{ % for i in dict_result.keys() %
+                }
+                '{{ i }}',
+                { % endfor %
+        }
+
+    ]
+    }
+    ],
+    series: [
+        {
+
+            type: 'bar',
+            data: [{ % for j in dict_result.values() %
+        }
+        {{j}
+    },
+    {%
+        endfor %
+    }
+    ]
+    },
+
+    ]
+    })
+    ;
+
+</script>
+
+
+</body>
+
+</html>

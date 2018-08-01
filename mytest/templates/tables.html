@@ -1,0 +1,823 @@
+<html>
+
+<head>
+    <title>数据表</title>
+    <!-- Bootstrap -->
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../static/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+    <link href="../static/assets/styles.css" rel="stylesheet" media="screen">
+    <link href="../static/assets/DT_bootstrap.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="../static/assets/styles.css">
+    <link rel="stylesheet" href="../static/css/bootstrap-table.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script src="../static/vendors/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+</head>
+
+<body>
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="index.html">Admin Panel</a>
+            <div class="nav-collapse collapse">
+                <ul class="nav pull-right">
+                    <li class="dropdown">
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a tabindex="-1" href="#">Profile</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a tabindex="-1" href="login.html">Logout</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav">
+                    <li class="active">
+                        <a href="#">Dashboard</a>
+                    </li>
+
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span3" id="sidebar">
+            <ul id="span3" class="nav nav-list bs-docs-sidenav nav-collapse collapse">
+                <li>
+                    <a href="{{ url_for('index') }}"><i class="icon-chevron-right"></i> 总览</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('tables') }}"><i class="icon-chevron-right"></i> 数据表</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('data') }}"><i class="icon-chevron-right"></i> 数据处理</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('stats') }}"><i class="icon-chevron-right"></i> 数据图表</a>
+                </li>
+                <li>
+                    <a href="#"><span class="badge badge-success pull-right">3</span> DataBases</a>
+                </li>
+                <li>
+                    <a href="#"><span class="badge badge-info pull-right">{{ all_count }}</span> AllRecords</a>
+                </li>
+
+
+            </ul>
+        </div>
+        <!--/span-->
+        <div class="span9" id="content">
+            <div class="row-fluid">
+                <!-- block -->
+                <div class="block">
+                    <div class="navbar navbar-inner block-header">
+                        <div class="muted pull-left">腾讯云(Master)</div>
+                        {#
+                        <div class="pull-right">#}
+                            {# <p style="float: left;margin-top: 5px">搜索：</p>#}
+                            {# <input type="text" id="tencent_search">#}
+                            {#
+                        </div>
+                        #}
+                    </div>
+                    <div class="block-content collapse in">
+                        <div class="span12">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>id</th>
+                                    <th>电影名称</th>
+                                    <th>年份</th>
+                                    <th>国家</th>
+                                    <th>类别</th>
+                                    <th>豆瓣评分</th>
+                                    <th>IMDb评分</th>
+                                    <th>评论数</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for i in tencent_results %}
+                                <tr>
+                                    <td class="tencent_id{{ loop.index }}">{{ loop.index }}</td>
+                                    <td style="width: 150px"
+                                        class="tencent_movie_name{{ loop.index }}">{{ i['movie_name'] }}
+                                    </td>
+                                    <td class="tencent_movie_year{{ loop.index }}">{{ i['movie_year'][0] }}</td>
+                                    <td class="tencent_movie_area{{ loop.index }}">{{ i['movie_area'][0] }}</td>
+                                    <td class="tencent_movie_class{{ loop.index }}">{{ i['movie_class'][0] }}</td>
+                                    <td class="tencent_douban_score{{ loop.index }}">{{ i['DouBan_score'][0] }}</td>
+                                    <td class="tencent_imdb_score{{ loop.index }}">{{ i['IMDb_score'][0] }}</td>
+                                    <td class="tencent_movie_rate{{ loop.index }}">{{ i['movie_rate'] }}</td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="">
+                                <div class="dataTables_paginate paging_bootstrap pagination">
+                                    <ul id="tencent_ul" class="content_ul">
+                                        <li class="prev"><a>← Previous</a></li>
+                                        <li class="next"><a>Next → </a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /block -->
+            </div>
+            <div class="row-fluid">
+                <!-- block -->
+                <div class="block">
+                    <div class="navbar navbar-inner block-header">
+                        <div class="muted pull-left">本地(Slave1)</div>
+                        {#
+                        <div class="pull-right">#}
+                            {# <p style="float: left;margin-top: 5px">搜索：</p>#}
+                            {# <input type="text" id="win_search">#}
+                            {#
+                        </div>
+                        #}
+                    </div>
+                    <div class="block-content collapse in">
+                        <div class="span12">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>id</th>
+                                    <th>电影名称</th>
+                                    <th>年份</th>
+                                    <th>国家</th>
+                                    <th>类别</th>
+                                    <th>豆瓣评分</th>
+                                    <th>IMDb评分</th>
+                                    <th>评论数</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for i in win_results %}
+                                <tr>
+                                    <td class="win_id{{ loop.index }}">{{ loop.index }}</td>
+                                    <td style="width: 150px"
+                                        class="win_movie_name{{ loop.index }}">{{ i['movie_name'] }}
+                                    </td>
+                                    <td class="win_movie_year{{ loop.index }}">{{ i['movie_year'][0] }}</td>
+                                    <td class="win_movie_area{{ loop.index }}">{{ i['movie_area'][0] }}</td>
+                                    <td class="win_movie_class{{ loop.index }}">{{ i['movie_class'][0] }}</td>
+                                    <td class="win_douban_score{{ loop.index }}">{{ i['DouBan_score'][0] }}</td>
+                                    <td class="win_imdb_score{{ loop.index }}">{{ i['IMDb_score'][0] }}</td>
+                                    <td class="win_movie_rate{{ loop.index }}">{{ i['movie_rate'] }}</td>
+                                </tr>
+                                {% endfor %}
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="">
+                                <div class="dataTables_paginate paging_bootstrap pagination">
+                                    <ul id="win_ul" class="content_ul">
+                                        <li class="prev"><a>← Previous</a></li>
+                                        <li class="next"><a>Next → </a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /block -->
+            </div>
+            <div class="row-fluid">
+                <!-- block -->
+                <div class="block">
+                    <div class="navbar navbar-inner block-header">
+                        <div class="muted pull-left">阿里云(Slave2)</div>
+                        {#
+                        <div class="pull-right">#}
+                            {# <p style="float: left;margin-top: 5px">搜索：</p>#}
+                            {# <input type="text" id="ali_search">#}
+                            {#
+                        </div>
+                        #}
+                    </div>
+                    <div class="block-content collapse in">
+                        <div class="span12">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>id</th>
+                                    <th>电影名称</th>
+                                    <th>年份</th>
+                                    <th>国家</th>
+                                    <th>类别</th>
+                                    <th>豆瓣评分</th>
+                                    <th>IMDb评分</th>
+                                    <th>评论数</th>
+                                </tr>
+                                </thead>
+                                <tbody id="ali_tbody">
+                                {% for i in ali_results %}
+                                <tr>
+                                    <td class="ali_id{{ loop.index }}">{{ loop.index }}</td>
+                                    <td style="width: 150px"
+                                        class="ali_movie_name{{ loop.index }}">{{ i['movie_name'] }}
+                                    </td>
+                                    <td class="ali_movie_year{{ loop.index }}">{{ i['movie_year'][0] }}</td>
+                                    <td class="ali_movie_area{{ loop.index }}">{{ i['movie_area'][0] }}</td>
+                                    <td class="ali_movie_class{{ loop.index }}">{{ i['movie_class'][0] }}</td>
+                                    <td class="ali_douban_score{{ loop.index }}">{{ i['DouBan_score'][0] }}</td>
+                                    <td class="ali_imdb_score{{ loop.index }}">{{ i['IMDb_score'][0] }}</td>
+                                    <td class="ali_movie_rate{{ loop.index }}">{{ i['movie_rate'] }}</td>
+                                </tr>
+                                {% endfor %}
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="">
+                                <div class="dataTables_paginate paging_bootstrap pagination">
+                                    <ul id="ali_ul" class="content_ul">
+                                        <li class="prev"><a>← Previous</a></li>
+                                        <li class="next"><a>Next → </a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /block -->
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+    </footer>
+</div>
+<!--/.fluid-container-->
+
+<script src="../static/vendors/jquery-1.9.1.js"></script>
+<script src="../static/js/bootstrap.min.js"></script>
+<script src="../static/vendors/datatables/js/jquery.dataTables.min.js"></script>
+<script src="../static/assets/bootstrap-table.js"></script>
+{#
+<script src="../static/assets/DT_bootstrap.js"></script>
+#}
+<script src="../static/assets/scripts.js"></script>
+
+<script>
+
+
+    var ali_next_page = 5;
+
+    if (ali_next_page <= 5) {
+        $("#ali_ul li[class='prev'] a").css('color', '#999');
+        {
+            #$("#win_ul li[class='prev'] a").css('color', '#999');
+            #
+        }
+        {
+            #$("#tencent_ul li[class='prev'] a").css('color', '#999');
+            #
+        }
+    }
+    $("#ali_ul li[class='next'] a").click(function () {
+        ali_next_page += 5;
+        alert("页码：" + ali_next_page);
+        $("#ali_ul li[class='prev'] a").css('color', '')
+        $.ajax({
+            type: 'POST',
+            url: '{{ url_for('ali_get_page') }}',
+            data: {'pagenum': ali_next_page},
+            dataType: 'json',
+            success: function (result) {
+                var contents = JSON.stringify(result);
+                //alert(result.length);
+                for (var j = 0; j < 5; j++) {
+                    {
+                        #for(
+                        var i = 0;
+                        i < result.length;
+                        i++
+                    )
+                        {
+                            #
+                        }
+                        $(".ali_movie_name" + [j + 1]).text(((result[0])[j]));
+                        $(".ali_movie_year" + [j + 1]).text(((result[1])[j]));
+                        $(".ali_movie_area" + [j + 1]).text(((result[2])[j]));
+                        $(".ali_movie_class" + [j + 1]).text(((result[3])[j]));
+                        $(".ali_douban_score" + [j + 1]).text(((result[4])[j]));
+                        $(".ali_imdb_score" + [j + 1]).text(((result[5])[j]));
+                        $(".ali_movie_rate" + [j + 1]).text(((result[6])[j]));
+
+                    }
+                    {
+                        #$(".ali_movie_name" + [i + 1]).text(((result[0])[0]));
+                        #
+                    }
+                    {
+                        #$(".ali_movie_name2").text(((result[0])[1]));
+                        #
+                    }
+                    {
+                        #$(".ali_movie_name3").text(((result[0])[2]));
+                        #
+                    }
+                    {
+                        #$(".ali_movie_name4").text(((result[0])[3]));
+                        #
+                    }
+                    {
+                        #$(".ali_movie_name5").text(((result[0])[4]));
+                        #
+                    }
+
+
+                    // {
+                    //}
+                }
+            ,
+                error: function () {
+                    alert("请求失败！");
+                    console.log("ajax失败！");
+
+                }
+            });
+
+    });
+
+    $("#ali_ul li[class='prev'] a").click(function () {
+
+        ali_next_page -= 5;
+        if (ali_next_page <= 5) {
+            $("#ali_ul li[class='prev'] a").css('color', '#999');
+        }
+        alert(ali_next_page);
+        if (ali_next_page > 0) {
+            //$("#ali_ul li[class='prev']").removeClass('disabled');
+            $.ajax({
+                type: 'POST',
+                url: '{{ url_for('ali_get_page') }}',
+                data: {'pagenum': ali_next_page},
+                dataType: 'json',
+                success: function (result) {
+                    //alert("请求成功");
+                    for (var j = 0; j < 5; j++) {
+                        {
+                            #for(
+                            var i = 0;
+                            i < result.length;
+                            i++
+                        )
+                            {
+                                #
+                            }
+                            $(".ali_movie_name" + [j + 1]).text(((result[0])[j]));
+                            $(".ali_movie_year" + [j + 1]).text(((result[1])[j]));
+                            $(".ali_movie_area" + [j + 1]).text(((result[2])[j]));
+                            $(".ali_movie_class" + [j + 1]).text(((result[3])[j]));
+                            $(".ali_douban_score" + [j + 1]).text(((result[4])[j]));
+                            $(".ali_imdb_score" + [j + 1]).text(((result[5])[j]));
+                            $(".ali_movie_rate" + [j + 1]).text(((result[6])[j]));
+
+                        }
+                    }
+                ,
+                    error: function () {
+                        alert("请求失败！");
+                        console.log("ajax失败！");
+
+                    }
+                });
+        }
+
+
+    });
+    var win_next_page = 5;
+
+    if (win_next_page <= 5) {
+        //$("#ali_ul li[class='prev'] a").css('color', '#999');
+        $("#win_ul li[class='prev'] a").css('color', '#999');
+        {
+            #$("#tencent_ul li[class='prev'] a").css('color', '#999');
+            #
+        }
+    }
+    $("#win_ul li[class='next'] a").click(function () {
+        win_next_page += 5;
+        alert("页码：" + win_next_page);
+        $("#win_ul li[class='prev'] a").css('color', '')
+        $.ajax({
+            type: 'POST',
+            url: '{{ url_for('win_get_page') }}',
+            data: {'pagenum': win_next_page},
+            dataType: 'json',
+            success: function (result) {
+                var contents = JSON.stringify(result);
+                //alert(result.length);
+                for (var j = 0; j < 5; j++) {
+                    {
+                        #for(
+                        var i = 0;
+                        i < result.length;
+                        i++
+                    )
+                        {
+                            #
+                        }
+                        $(".win_movie_name" + [j + 1]).text(((result[0])[j]));
+                        $(".win_movie_year" + [j + 1]).text(((result[1])[j]));
+                        $(".win_movie_area" + [j + 1]).text(((result[2])[j]));
+                        $(".win_movie_class" + [j + 1]).text(((result[3])[j]));
+                        $(".win_douban_score" + [j + 1]).text(((result[4])[j]));
+                        $(".win_imdb_score" + [j + 1]).text(((result[5])[j]));
+                        $(".win_movie_rate" + [j + 1]).text(((result[6])[j]));
+
+                    }
+                    {
+                        #$(".ali_movie_name" + [i + 1]).text(((result[0])[0]));
+                        #
+                    }
+                    {
+                        #$(".ali_movie_name2").text(((result[0])[1]));
+                        #
+                    }
+                    {
+                        #$(".ali_movie_name3").text(((result[0])[2]));
+                        #
+                    }
+                    {
+                        #$(".ali_movie_name4").text(((result[0])[3]));
+                        #
+                    }
+                    {
+                        #$(".ali_movie_name5").text(((result[0])[4]));
+                        #
+                    }
+
+
+                    // {
+                    //}
+                }
+            ,
+                error: function () {
+                    alert("请求失败！");
+                    console.log("ajax失败！");
+
+                }
+            });
+
+    });
+
+    $("#win_ul li[class='prev'] a").click(function () {
+
+        win_next_page -= 5;
+        if (win_next_page <= 5) {
+            $("#win_ul li[class='prev'] a").css('color', '#999');
+        }
+        alert(win_next_page);
+        if (win_next_page > 0) {
+            //$("#ali_ul li[class='prev']").removeClass('disabled');
+            $.ajax({
+                type: 'POST',
+                url: '{{ url_for('win_get_page') }}',
+                data: {'pagenum': win_next_page},
+                dataType: 'json',
+                success: function (result) {
+                    //alert("请求成功");
+                    for (var j = 0; j < 5; j++) {
+                        {
+                            #for(
+                            var i = 0;
+                            i < result.length;
+                            i++
+                        )
+                            {
+                                #
+                            }
+                            $(".win_movie_name" + [j + 1]).text(((result[0])[j]));
+                            $(".win_movie_year" + [j + 1]).text(((result[1])[j]));
+                            $(".win_movie_area" + [j + 1]).text(((result[2])[j]));
+                            $(".win_movie_class" + [j + 1]).text(((result[3])[j]));
+                            $(".win_douban_score" + [j + 1]).text(((result[4])[j]));
+                            $(".win_imdb_score" + [j + 1]).text(((result[5])[j]));
+                            $(".win_movie_rate" + [j + 1]).text(((result[6])[j]));
+
+                        }
+                    }
+                ,
+                    error: function () {
+                        alert("请求失败！");
+                        console.log("ajax失败！");
+
+                    }
+                });
+        }
+
+
+    });
+    var tencent_next_page = 5;
+
+    if (tencent_next_page <= 5) {
+        //$("#ali_ul li[class='prev'] a").css('color', '#999');
+        {
+            #$("#win_ul li[class='prev'] a").css('color', '#999');
+            #
+        }
+        $("#tencent_ul li[class='prev'] a").css('color', '#999');
+    }
+    $("#tencent_ul li[class='next'] a").click(function () {
+        tencent_next_page += 5;
+        alert("页码：" + tencent_next_page);
+        $("#tencent_ul li[class='prev'] a").css('color', '')
+        $.ajax({
+            type: 'POST',
+            url: '{{ url_for('tencent_get_page') }}',
+            data: {'pagenum': tencent_next_page},
+            dataType: 'json',
+            success: function (result) {
+                var contents = JSON.stringify(result);
+                //alert(result.length);
+                for (var j = 0; j < 5; j++) {
+                    {
+                        #for(
+                        var i = 0;
+                        i < result.length;
+                        i++
+                    )
+                        {
+                            #
+                        }
+                        $(".tencent_movie_name" + [j + 1]).text(((result[0])[j]));
+                        $(".tencent_movie_year" + [j + 1]).text(((result[1])[j]));
+                        $(".tencent_movie_area" + [j + 1]).text(((result[2])[j]));
+                        $(".tencent_movie_class" + [j + 1]).text(((result[3])[j]));
+                        $(".tencent_douban_score" + [j + 1]).text(((result[4])[j]));
+                        $(".tencent_imdb_score" + [j + 1]).text(((result[5])[j]));
+                        $(".tencent_movie_rate" + [j + 1]).text(((result[6])[j]));
+
+                    }
+                    {
+                        #$(".ali_movie_name" + [i + 1]).text(((result[0])[0]));
+                        #
+                    }
+                    {
+                        #$(".ali_movie_name2").text(((result[0])[1]));
+                        #
+                    }
+                    {
+                        #$(".ali_movie_name3").text(((result[0])[2]));
+                        #
+                    }
+                    {
+                        #$(".ali_movie_name4").text(((result[0])[3]));
+                        #
+                    }
+                    {
+                        #$(".ali_movie_name5").text(((result[0])[4]));
+                        #
+                    }
+
+
+                    // {
+                    //}
+                }
+            ,
+                error: function () {
+                    alert("请求失败！");
+                    console.log("ajax失败！");
+
+                }
+            });
+
+    });
+
+    $("#tencent_ul li[class='prev'] a").click(function () {
+
+        tencent_next_page -= 5;
+        if (tencent_next_page <= 5) {
+            $("#tencent_ul li[class='prev'] a").css('color', '#999');
+        }
+        alert(tencent_next_page);
+        if (tencent_next_page > 0) {
+            //$("#ali_ul li[class='prev']").removeClass('disabled');
+            $.ajax({
+                type: 'POST',
+                url: '{{ url_for('tencent_get_page') }}',
+                data: {'pagenum': tencent_next_page},
+                dataType: 'json',
+                success: function (result) {
+                    //alert("请求成功");
+                    for (var j = 0; j < 5; j++) {
+                        {
+                            #for(
+                            var i = 0;
+                            i < result.length;
+                            i++
+                        )
+                            {
+                                #
+                            }
+                            $(".tencent_movie_name" + [j + 1]).text(((result[0])[j]));
+                            $(".tencent_movie_year" + [j + 1]).text(((result[1])[j]));
+                            $(".tencent_movie_area" + [j + 1]).text(((result[2])[j]));
+                            $(".tencent_movie_class" + [j + 1]).text(((result[3])[j]));
+                            $(".tencent_douban_score" + [j + 1]).text(((result[4])[j]));
+                            $(".tencent_imdb_score" + [j + 1]).text(((result[5])[j]));
+                            $(".tencent_movie_rate" + [j + 1]).text(((result[6])[j]));
+
+                        }
+                    }
+                ,
+                    error: function () {
+                        alert("请求失败！");
+                        console.log("ajax失败！");
+
+                    }
+                });
+        }
+
+
+    });
+
+
+    {
+        #$("#ali_search").blur(function () {
+            #
+        }
+        {
+            #    var
+            context = $("#ali_search").val();
+            #
+        }
+        {
+            #    $.ajax({
+            #
+        }
+            {
+                #            type
+            :
+                'POST', #
+            }
+            {
+                #            url
+            :
+                '{{ url_for('
+                search
+                ') }}', #
+            }
+            {
+                #            data
+            :
+                {
+                    'id'
+                :
+                    3, 'context'
+                :
+                    context
+                }
+            ,
+                #
+            }
+            {
+                #            dataType
+            :
+                'json', #
+            }
+            {
+                #            success
+            :
+
+                function (result) {
+                    #
+                }
+
+                {
+                    #                alert("请求成功!");
+                    #
+                }
+                {
+                    #                alert(result);
+                    #
+                }
+                {
+                    #              $("#ali_tbody").empty();
+                    #
+                }
+                {
+                    #               for(
+                    var j = 0;
+                    j < 5;
+                    j++
+                )
+                    {
+                        #
+                    }
+                    {
+                        #for(
+                        var i = 0;
+                        i < result.length;
+                        i++
+                    )
+                        {
+                            #
+                        }
+                        {
+                            #                     $(".ali_movie_name" + [j + 1]).text(((result[0])[j]));
+                            #
+                        }
+                        {
+                            #                     $(".ali_movie_year" + [j + 1]).text(((result[1])[j]));
+                            #
+                        }
+                        {
+                            #                     $(".ali_movie_area" + [j + 1]).text(((result[2])[j]));
+                            #
+                        }
+                        {
+                            #                     $(".ali_movie_class" + [j + 1]).text(((result[3])[j]));
+                            #
+                        }
+                        {
+                            #                     $(".ali_douban_score" + [j + 1]).text(((result[4])[j]));
+                            #
+                        }
+                        {
+                            #                     $(".alit_imdb_score" + [j + 1]).text(((result[5])[j]));
+                            #
+                        }
+                        {
+                            #                     $(".ali_movie_rate" + [j + 1]).text(((result[6])[j]));
+                            #
+                        }
+                        {
+                            #
+                            #
+                        }
+                        {
+                            #
+                        }
+                        #
+                    }
+                    {
+                        #
+                        #
+                    }
+                    {
+                        #
+                    }
+                ,
+                    #
+                }
+                {
+                    #            error
+                :
+
+                    function () {
+                        #
+                    }
+
+                    {
+                        #                alert("请求失败！");
+                        #
+                    }
+                    {
+                        #                console.log("ajax失败！");
+                        #
+                    }
+                    {
+                        #
+                        #
+                    }
+                    {
+                        #
+                    }
+                    #
+                }
+                {
+                    #
+                }
+            )
+            ;#
+        }
+    //});
+
+</script>
+
+</body>
+
+</html>

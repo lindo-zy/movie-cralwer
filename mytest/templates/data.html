@@ -1,0 +1,411 @@
+<html>
+
+<head>
+    <title>数据处理</title>
+    <!-- Bootstrap -->
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../static/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+    <link href="../static/assets/styles.css" rel="stylesheet" media="screen">
+    <link href="../static/assets/DT_bootstrap.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="../static/assets/styles.css">
+    <link rel="stylesheet" href="../static/css/bootstrap-table.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script src="../static/vendors/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+</head>
+
+<body>
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="index.html">Admin Panel</a>
+            <div class="nav-collapse collapse">
+                <ul class="nav pull-right">
+                    <li class="dropdown">
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a tabindex="-1" href="#">Profile</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a tabindex="-1" href="login.html">Logout</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav">
+                    <li class="active">
+                        <a href="#">Dashboard</a>
+                    </li>
+
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span3" id="sidebar">
+            <ul id="span3" class="nav nav-list bs-docs-sidenav nav-collapse collapse">
+                <li>
+                    <a href="{{ url_for('index') }}"><i class="icon-chevron-right"></i> 总览</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('tables') }}"><i class="icon-chevron-right"></i> 数据表</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('data') }}"><i class="icon-chevron-right"></i> 数据处理</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('stats') }}"><i class="icon-chevron-right"></i> 数据图表</a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="badge badge-success pull-right">3</span> DataBases</a>
+                </li>
+                <li>
+                    <a href="#"><span class="badge badge-info pull-right">{{ all_count }}</span> AllRecords</a>
+                </li>
+
+
+            </ul>
+        </div>
+        <!--/span-->
+        <div class="span9" id="content">
+            <div class="row-fluid">
+                <div class="span6">
+                    <!-- block -->
+                    <div class="block">
+                        <div class="navbar navbar-inner block-header">
+                            <div class="muted pull-left"><b>腾讯云(Master)</b></div>
+                        </div>
+                        <div class="block-content collapse in">
+                            <div class="span12">
+                                <h4>数据处理功能</h4>
+                                <p>
+                                    <button class="btn btn-large" onclick="delete_one(id=1)">清理电影名称</button>
+                                    <button class="btn btn-primary btn-large" onclick="clean_movie_year(id=1)">
+                                        清理电影年代
+                                    </button>
+                                    <button class="btn btn-info btn-large" onclick="clean_movie_area(id=1)">
+                                        清理电影国家
+                                    </button>
+                                    <button class="btn btn-danger btn-large" onclick="clean_movie_class(id=1)">清理电影分类
+                                    </button>
+                                    <button class="btn btn-success btn-large" onclick="clean_douban_score(id=1)">
+                                        清理豆瓣评分
+                                    </button>
+                                    <button class="btn btn-warning btn-large" onclick="clean_imdb_score(id=1)">
+                                        清理IMDB评分
+                                    </button>
+
+
+                                </p>
+                                <div class="well" style="margin-top:30px;">
+                                    <button type="button" class="btn btn-large btn-block btn-primary"
+                                            onclick="all_clean(id=1)">清理全部
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /block -->
+                </div>
+
+            </div>
+            <div class="row-fluid">
+                <div class="span6">
+                    <!-- block -->
+                    <div class="block">
+                        <div class="navbar navbar-inner block-header">
+                            <div class="muted pull-left"><b>本地(Slave1)</b></div>
+                        </div>
+                        <div class="block-content collapse in">
+                            <div class="span12">
+                                <h4>数据处理功能</h4>
+                                <p>
+                                    <button class="btn btn-large" onclick="delete_one(id=2)">清理电影名称</button>
+                                    <button class="btn btn-primary btn-large" onclick="clean_movie_year(id=2)">
+                                        清理电影年代
+                                    </button>
+                                    <button class="btn btn-info btn-large" onclick="clean_movie_area(id=2)">
+                                        清理电影国家
+                                    </button>
+                                    <button class="btn btn-danger btn-large" onclick="clean_movie_class(id=2)">清理电影分类
+                                    </button>
+                                    <button class="btn btn-success btn-large" onclick="clean_douban_score(id=2)">
+                                        清理豆瓣评分
+                                    </button>
+                                    <button class="btn btn-warning btn-large" onclick="clean_imdb_score(id=2)">
+                                        清理IMDB评分
+                                    </button>
+
+
+                                </p>
+                                <div class="well" style="margin-top:30px;">
+                                    <button type="button" class="btn btn-large btn-block btn-primary"
+                                            onclick="all_clean(id=2)">清理全部
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /block -->
+                </div>
+
+            </div>
+            <div class="row-fluid">
+                <div class="span6">
+                    <!-- block -->
+                    <div class="block">
+                        <div class="navbar navbar-inner block-header">
+                            <div class="muted pull-left"><b>阿里云(Slave2)</b></div>
+                        </div>
+                        <div class="block-content collapse in">
+                            <div class="span12">
+                                <h4>数据处理功能</h4>
+                                <p>
+                                    <button class="btn btn-large" onclick="delete_one(id=3)">清理电影名称</button>
+                                    <button class="btn btn-primary btn-large" onclick="clean_movie_year(id=3)">
+                                        清理电影年代
+                                    </button>
+                                    <button class="btn btn-info btn-large" onclick="clean_movie_area(id=3)">
+                                        清理电影国家
+                                    </button>
+                                    <button class="btn btn-danger btn-large" onclick="clean_movie_class(id=3)">清理电影分类
+                                    </button>
+                                    <button class="btn btn-success btn-large" onclick="clean_douban_score(id=3)">
+                                        清理豆瓣评分
+                                    </button>
+                                    <button class="btn btn-warning btn-large" onclick="clean_imdb_score(id=3)">
+                                        清理IMDB评分
+                                    </button>
+
+
+                                </p>
+                                <div class="well" style="margin-top:30px;">
+                                    <button type="button" class="btn btn-large btn-block btn-primary"
+                                            onclick="all_clean(id=3)">清理全部
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /block -->
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+
+    <footer>
+    </footer>
+</div>
+<!--/.fluid-container-->
+
+<script src="../static/vendors/jquery-1.9.1.js"></script>
+<script src="../static/js/bootstrap.min.js"></script>
+<script src="../static/vendors/datatables/js/jquery.dataTables.min.js"></script>
+<script src="../static/assets/bootstrap-table.js"></script>
+<script src="../static/assets/DT_bootstrap.js"></script>
+<script src="../static/assets/scripts.js"></script>
+
+<script>
+    function delete_one(id) {
+        alert(id);
+        $.ajax({
+            type: 'POST',
+            url: '{{ url_for('delete_one') }}',
+            data: {'id': id},
+            dataType: 'json',
+            success: function (result) {
+                alert("清理成功");
+                {
+                    #alert(JSON.stringify(result));
+                    #
+                }
+                {
+                    #alert(result["result"])
+                    #
+                }
+            },
+            error: function () {
+                alert("请求失败！");
+                console.log("ajax失败！");
+
+            }
+        });
+    };
+
+    function clean_movie_year(id) {
+        alert(id);
+        $.ajax({
+            type: 'POST',
+            url: '{{ url_for('clean_movie_year') }}',
+            data: {'id': id},
+            dataType: 'json',
+            success: function (result) {
+                alert("清理成功");
+                {
+                    #alert(JSON.stringify(result));
+                    #
+                }
+                {
+                    #alert(result["result"])
+                    #
+                }
+            },
+            error: function () {
+                alert("请求失败");
+                console.log("ajax失败！");
+
+            }
+        });
+    };
+
+
+    function clean_movie_area(id) {
+        alert(id);
+        $.ajax({
+            type: 'POST',
+            url: '{{ url_for('clean_movie_area') }}',
+            data: {'id': id},
+            dataType: 'json',
+            success: function (result) {
+                alert("清理成功");
+                {
+                    #alert(JSON.stringify(result));
+                    #
+                }
+                {
+                    #alert(result["result"])
+                    #
+                }
+            },
+            error: function () {
+                alert("请求失败");
+                console.log("ajax失败！");
+
+            }
+        });
+    };
+
+    function clean_movie_class(id) {
+        alert(id);
+        $.ajax({
+            type: 'POST',
+            url: '{{ url_for('clean_movie_class') }}',
+            data: {'id': id},
+            dataType: 'json',
+            success: function (result) {
+                alert("清理成功");
+                {
+                    #alert(JSON.stringify(result));
+                    #
+                }
+                {
+                    #alert(result["result"])
+                    #
+                }
+            },
+            error: function () {
+                alert("请求失败");
+                console.log("ajax失败！");
+
+            }
+        });
+    };
+
+
+    function clean_douban_score(id) {
+        alert(id);
+        $.ajax({
+            type: 'POST',
+            url: '{{ url_for('clean_douban_socre') }}',
+            data: {'id': id},
+            dataType: 'json',
+            success: function (result) {
+                alert("清理成功");
+                {
+                    #alert(JSON.stringify(result));
+                    #
+                }
+                {
+                    #alert(result["result"])
+                    #
+                }
+            },
+            error: function () {
+                alert("请求失败！");
+                console.log("ajax失败！");
+
+            }
+        });
+    };
+
+    function clean_imdb_score(id) {
+        alert(id);
+        $.ajax({
+            type: 'POST',
+            url: '{{ url_for('clean_imdb_socre') }}',
+            data: {'id': id},
+            dataType: 'json',
+            success: function (result) {
+                alert("清理成功");
+                {
+                    #alert(JSON.stringify(result));
+                    #
+                }
+                {
+                    #alert(result["result"])
+                    #
+                }
+            },
+            error: function () {
+                alert("请求失败！");
+                console.log("ajax失败！");
+
+            }
+        });
+    };
+
+    function all_clean(id) {
+        alert(id);
+        $.ajax({
+            type: 'POST',
+            url: '{{ url_for('all_clean') }}',
+            data: {'id': id},
+            dataType: 'json',
+            success: function (result) {
+                alert("清理成功");
+                {
+                    #alert(JSON.stringify(result));
+                    #
+                }
+                {
+                    #alert(result["result"])
+                    #
+                }
+            },
+            error: function () {
+                alert("请求失败！");
+                console.log("ajax失败！");
+
+            }
+        });
+    };
+
+</script>
+
+</body>
+
+</html>
